@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { tracks } from '@/data';
+import type { Track } from '@/types/track';
 import {
   getUniqueReleaseYears,
   getUniqueTrackValues,
@@ -17,7 +17,11 @@ type FilterConfig = {
   values: string[];
 };
 
-export default function Filter() {
+type FilterProps = {
+  tracks: Track[];
+};
+
+export default function Filter({ tracks }: FilterProps) {
   const [activeFilter, setActiveFilter] = useState<FilterName | null>(null);
 
   const filters: FilterConfig[] = [

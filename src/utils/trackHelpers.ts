@@ -1,4 +1,4 @@
-import type { Track } from '@/data';
+import type { Track } from '@/types/track';
 
 export function formatTrackTime(secondsTotal: number): string {
   const minutes = Math.floor(secondsTotal / 60);
@@ -28,7 +28,9 @@ export function getUniqueTrackValues(
 }
 
 export function getUniqueReleaseYears(tracks: Track[]): string[] {
-  const years = tracks.map((track) => track.releaseDate.slice(0, 4));
+  const years = tracks
+    .map((track) => track.release_date.slice(0, 4))
+    .filter(Boolean);
 
   return Array.from(new Set(years)).sort((first, second) =>
     second.localeCompare(first),
