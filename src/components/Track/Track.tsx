@@ -1,4 +1,5 @@
 import type { Track as TrackType } from '@/data';
+import { formatTrackTime } from '@/utils/trackHelpers';
 import styles from './Track.module.css';
 
 type TrackProps = {
@@ -30,7 +31,9 @@ export default function Track({ track }: TrackProps) {
           <svg className={styles.trackTimeSvg}>
             <use href="/img/icon/sprite.svg#icon-like"></use>
           </svg>
-          <span className={styles.trackTimeText}>{track.duration}</span>
+          <span className={styles.trackTimeText}>
+            {formatTrackTime(track.durationInSeconds)}
+          </span>
         </div>
       </div>
     </div>

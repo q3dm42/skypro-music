@@ -1,0 +1,11 @@
+.filterItem {
+  font-size: 20px;
+  line-height: 24px;
+  cursor: pointer;
+  list-style: none;
+}
+
+.filterItem:hover {
+  color: #b672ff;
+  text-decoration: underline;
+}
