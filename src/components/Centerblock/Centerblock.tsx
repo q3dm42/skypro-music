@@ -1,4 +1,12 @@
+'use client';
+
+import { useMemo, useState } from 'react';
 import type { Track } from '@/types/track';
+import {
+  applyTrackFilters,
+  defaultTrackFilters,
+  type TrackFilters,
+} from '@/utils/filterTracks';
 import Filter from '../Filter/Filter';
 import Playlist from '../Playlist/Playlist';
 import Search from '../Search/Search';
@@ -10,11 +18,24 @@ type CenterblockProps = {
 };
 
 export default function Centerblock({ tracks, title }: CenterblockProps) {
+  const [filters, setFilters] = useState<TrackFilters>(defaultTrackFilters);
+  const filteredTracks = useMemo(
+    () => applyTrackFilters(tracks, filters),
+    [filters, tracks],
+  );
+
+  const handleSearchChange = (search: string) => {
+    setFilters((currentFilters) => ({
+      ...currentFilters,
+      search,
+    }));
+  };
+
   return (
     <section className={styles.centerblock}>
-      <Search />
+      <Search value={filters.search} onChange={handleSearchChange} />
       <h1 className={styles.h2}>{title}</h1>
-      <Filter tracks={tracks} />
+      <Filter filters={filters} onFilterChange={setFilters} tracks={tracks} />
 
       <div className={styles.content}>
         <div className={styles.contentTitle}>
@@ -34,7 +55,11 @@ export default function Centerblock({ tracks, title }: CenterblockProps) {
           </div>
         </div>
 
-        <Playlist tracks={tracks} />
+        {filteredTracks.length > 0 ? (
+          <Playlist tracks={filteredTracks} />
+        ) : (
+          <div className={styles.empty}>Нет подходящих треков</div>
+        )}
       </div>
     </section>
   );

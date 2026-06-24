@@ -125,3 +125,10 @@
   fill: transparent;
   stroke: #696969;
 }
+
+.empty {
+  padding: 24px 0;
+  color: #ffffff;
+  font-size: 20px;
+  line-height: 28px;
+}
