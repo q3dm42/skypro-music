@@ -18,6 +18,10 @@
   position: relative;
 }
 
+.filterWrapper:not(:last-child) {
+  margin-right: 10px;
+}
+
 .filter__button {
   font-style: normal;
   font-weight: 400;
@@ -33,10 +37,6 @@
   transition:
     border-color 0.2s ease,
     color 0.2s ease;
-}
-
-.filter__button:not(:last-child) {
-  margin-right: 10px;
 }
 
 .active {
