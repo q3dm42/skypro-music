@@ -1,8 +1,11 @@
 import type { Track } from '@/types/track';
 
 export function formatTrackTime(secondsTotal: number): string {
-  const minutes = Math.floor(secondsTotal / 60);
-  const seconds = secondsTotal % 60;
+  const safeSecondsTotal = Number.isFinite(secondsTotal)
+    ? Math.floor(secondsTotal)
+    : 0;
+  const minutes = Math.floor(safeSecondsTotal / 60);
+  const seconds = safeSecondsTotal % 60;
 
   return `${minutes}:${seconds.toString().padStart(2, '0')}`;
 }

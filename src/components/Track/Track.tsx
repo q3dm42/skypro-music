@@ -1,16 +1,21 @@
 'use client';
 
 import type { Track as TrackType } from '@/types/track';
-import { setCurrentTrack, setIsPlaying } from '@/store/features/trackSlice';
+import {
+  setCurrentPlaylist,
+  setCurrentTrack,
+  setIsPlaying,
+} from '@/store/features/trackSlice';
 import { useAppDispatch, useAppSelector } from '@/store/store';
 import { formatTrackTime } from '@/utils/trackHelpers';
 import styles from './Track.module.css';
 
 type TrackProps = {
   track: TrackType;
+  playlist: TrackType[];
 };
 
-export default function Track({ track }: TrackProps) {
+export default function Track({ track, playlist }: TrackProps) {
   const dispatch = useAppDispatch();
   const currentTrack = useAppSelector((state) => state.track.currentTrack);
   const isPlaying = useAppSelector((state) => state.track.isPlaying);
@@ -19,6 +24,7 @@ export default function Track({ track }: TrackProps) {
 
   const handleTrackClick = () => {
     dispatch(setCurrentTrack(track));
+    dispatch(setCurrentPlaylist(playlist));
     dispatch(setIsPlaying(true));
   };
 

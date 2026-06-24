@@ -10,7 +10,7 @@ export default function Playlist({ tracks }: PlaylistProps) {
   return (
     <div className={styles.contentPlaylist}>
       {tracks.map((track) => (
-        <Track key={track._id} track={track} />
+        <Track key={track._id} track={track} playlist={tracks} />
       ))}
     </div>
   );
