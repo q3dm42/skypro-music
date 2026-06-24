@@ -29,3 +29,12 @@ export async function getUserToken(
     body: JSON.stringify(payload),
   });
 }
+
+export async function refreshUserToken(refresh: string): Promise<{
+  access: string;
+}> {
+  return requestJson<{ access: string }>('/user/token/refresh/', {
+    method: 'POST',
+    body: JSON.stringify({ refresh }),
+  });
+}

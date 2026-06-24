@@ -5,6 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { getUserToken, loginUser, signupUser } from '@/api/auth';
+import { saveAuthData } from '@/utils/authStorage';
 import styles from './AuthForm.module.css';
 
 type AuthMode = 'signin' | 'signup';
@@ -45,9 +46,7 @@ export default function AuthForm({ mode }: AuthFormProps) {
           getUserToken({ email, password }),
         ]);
 
-        localStorage.setItem('skypro-music-user', JSON.stringify(user));
-        localStorage.setItem('skypro-music-access', tokens.access);
-        localStorage.setItem('skypro-music-refresh', tokens.refresh);
+        saveAuthData(user, tokens);
         router.push('/');
       }
     } catch (caughtError) {

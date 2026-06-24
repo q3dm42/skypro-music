@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import LogoutButton from '../LogoutButton/LogoutButton';
 import styles from './Sidebar.module.css';
 
 const playlists = [
@@ -15,10 +16,7 @@ const playlists = [
 export default function Sidebar() {
   return (
     <aside className={styles.sidebar}>
-      <div className={styles.personal}>
-        <p className={styles.personalName}>Sergey.Ivanov</p>
-        <div className={styles.icon}></div>
-      </div>
+      <LogoutButton />
 
       <div className={styles.block}>
         <div className={styles.list}>
