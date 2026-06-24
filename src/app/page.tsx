@@ -1,24 +1,31 @@
 import { getTracks } from '@/api/tracks';
-import Bar from '@/components/Bar/Bar';
+import AppShell from '@/components/AppShell/AppShell';
 import Centerblock from '@/components/Centerblock/Centerblock';
-import Nav from '@/components/Nav/Nav';
-import Sidebar from '@/components/Sidebar/Sidebar';
-import styles from './page.module.css';
+import ErrorMessage from '@/components/ErrorMessage/ErrorMessage';
+import type { Track } from '@/types/track';
 
 export default async function Home() {
-  const tracks = await getTracks();
+  let tracks: Track[];
+
+  try {
+    tracks = await getTracks();
+  } catch (error) {
+    return (
+      <AppShell>
+        <ErrorMessage
+          message={
+            error instanceof Error
+              ? error.message
+              : 'Не удалось загрузить треки'
+          }
+        />
+      </AppShell>
+    );
+  }
 
   return (
-    <div className={styles.wrapper}>
-      <div className="container">
-        <main className={styles.main}>
-          <Nav />
-          <Centerblock tracks={tracks} />
-          <Sidebar />
-        </main>
-        <Bar />
-        <footer className={styles.footer}></footer>
-      </div>
-    </div>
+    <AppShell>
+      <Centerblock title="Треки" tracks={tracks} />
+    </AppShell>
   );
 }

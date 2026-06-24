@@ -51,7 +51,7 @@ export default function Nav() {
               </Link>
             </li>
             <li className={styles.menuItem}>
-              <Link href="/" className={styles.menuLink}>
+              <Link href="/signin" className={styles.menuLink}>
                 Войти
               </Link>
             </li>
