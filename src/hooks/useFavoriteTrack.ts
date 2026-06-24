@@ -21,6 +21,18 @@ function dispatchFavoriteUpdate(payload: FavoritePayload): void {
   );
 }
 
+function getNextStaredUser(
+  staredUser: number[],
+  userId: number,
+  shouldLike: boolean,
+): number[] {
+  if (shouldLike) {
+    return staredUser.includes(userId) ? staredUser : [...staredUser, userId];
+  }
+
+  return staredUser.filter((staredUserId) => staredUserId !== userId);
+}
+
 export function useFavoriteTrack(track: Track) {
   const user = useMemo(() => getStoredUser(), []);
   const [favoriteState, setFavoriteState] = useState<{
@@ -83,17 +95,25 @@ export function useFavoriteTrack(track: Track) {
     setIsLoading(true);
 
     try {
-      const updatedTrack = isLiked
-        ? await removeTrackFromFavorites(track._id)
-        : await addTrackToFavorites(track._id);
+      if (isLiked) {
+        await removeTrackFromFavorites(track._id);
+      } else {
+        await addTrackToFavorites(track._id);
+      }
+
+      const nextStaredUser = getNextStaredUser(
+        staredUser,
+        user._id,
+        !isLiked,
+      );
 
       setFavoriteState({
-        trackId: updatedTrack._id,
-        staredUser: updatedTrack.staredUser,
+        trackId: track._id,
+        staredUser: nextStaredUser,
       });
       dispatchFavoriteUpdate({
-        trackId: updatedTrack._id,
-        staredUser: updatedTrack.staredUser,
+        trackId: track._id,
+        staredUser: nextStaredUser,
       });
     } catch (caughtError) {
       setError(
@@ -104,7 +124,7 @@ export function useFavoriteTrack(track: Track) {
     } finally {
       setIsLoading(false);
     }
-  }, [isLiked, track._id, user]);
+  }, [isLiked, staredUser, track._id, user]);
 
   return {
     error,
