@@ -58,6 +58,20 @@ export function useFavoriteTrack(track: Track) {
     };
   }, [track._id]);
 
+  useEffect(() => {
+    if (!error) {
+      return;
+    }
+
+    const timeoutId = window.setTimeout(() => {
+      setError('');
+    }, 3000);
+
+    return () => {
+      window.clearTimeout(timeoutId);
+    };
+  }, [error]);
+
   const toggleFavorite = useCallback(async () => {
     setError('');
 
