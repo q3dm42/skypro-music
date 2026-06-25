@@ -1,0 +1,58 @@
+.progress {
+  --progress-height: 5px;
+  --progress-color: #b672ff;
+  --progress-bg-color: #2e2e2e;
+
+  margin: 0;
+  width: 100%;
+  height: var(--progress-height);
+  appearance: none;
+  cursor: pointer;
+  background: transparent;
+  position: relative;
+  overflow: hidden;
+  transition: height 0.2s ease;
+}
+
+.progress:hover {
+  --progress-height: 8px;
+}
+
+.progress:disabled {
+  cursor: default;
+}
+
+.progress::-webkit-slider-runnable-track {
+  position: relative;
+  height: var(--progress-height);
+  background: var(--progress-bg-color);
+}
+
+.progress::-webkit-slider-thumb {
+  appearance: none;
+  width: 10px;
+  height: 10px;
+  background-color: var(--progress-color);
+  border-radius: 50%;
+  position: relative;
+  box-shadow: -100vmax 0 0 100vmax var(--progress-color);
+}
+
+.progress::-moz-range-track {
+  width: 100%;
+  height: var(--progress-height);
+  background: var(--progress-bg-color);
+}
+
+.progress::-moz-range-thumb {
+  width: 10px;
+  height: 10px;
+  border: none;
+  border-radius: 50%;
+  background: var(--progress-color);
+}
+
+.progress::-moz-range-progress {
+  height: var(--progress-height);
+  background-color: var(--progress-color);
+}
