@@ -1,6 +1,5 @@
 import type { Track, TracksResponse } from '@/types/track';
-
-const API_BASE_URL = 'https://webdev-music-003b5b991590.herokuapp.com';
+import { API_BASE_URL } from './client';
 
 export async function getTracks(): Promise<Track[]> {
   const response = await fetch(`${API_BASE_URL}/catalog/track/all/`, {

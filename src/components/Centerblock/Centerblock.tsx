@@ -6,13 +6,14 @@ import styles from './Centerblock.module.css';
 
 type CenterblockProps = {
   tracks: Track[];
+  title: string;
 };
 
-export default function Centerblock({ tracks }: CenterblockProps) {
+export default function Centerblock({ tracks, title }: CenterblockProps) {
   return (
     <section className={styles.centerblock}>
       <Search />
-      <h1 className={styles.h2}>Треки</h1>
+      <h1 className={styles.h2}>{title}</h1>
       <Filter tracks={tracks} />
 
       <div className={styles.content}>

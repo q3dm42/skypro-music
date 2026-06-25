@@ -18,3 +18,21 @@ export type TracksResponse = {
   success: boolean;
   data: Track[];
 };
+
+export type Selection = {
+  _id: number;
+  name?: string;
+  items: number[];
+  owner: number[];
+  __v: number;
+};
+
+export type SelectionsResponse = {
+  success: boolean;
+  data: Selection[];
+};
+
+export type SelectionResponse = {
+  success: boolean;
+  data: Selection | null;
+};
