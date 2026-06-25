@@ -1,5 +1,4 @@
 import { getSelectionTracks } from '@/api/selections';
-import AppShell from '@/components/AppShell/AppShell';
 import Centerblock from '@/components/Centerblock/Centerblock';
 import ErrorMessage from '@/components/ErrorMessage/ErrorMessage';
 import type { Selection, Track } from '@/types/track';
@@ -17,11 +16,7 @@ export default async function SelectionPage({ params }: SelectionPageProps) {
   let tracks: Track[];
 
   if (!Number.isInteger(selectionId)) {
-    return (
-      <AppShell>
-        <ErrorMessage message="Некорректный номер подборки" />
-      </AppShell>
-    );
+    return <ErrorMessage message="Некорректный номер подборки" />;
   }
 
   try {
@@ -30,21 +25,15 @@ export default async function SelectionPage({ params }: SelectionPageProps) {
     tracks = selectionData.tracks;
   } catch (error) {
     return (
-      <AppShell>
-        <ErrorMessage
-          message={
-            error instanceof Error
-              ? error.message
-              : 'Не удалось загрузить подборку'
-          }
-        />
-      </AppShell>
+      <ErrorMessage
+        message={
+          error instanceof Error
+            ? error.message
+            : 'Не удалось загрузить подборку'
+        }
+      />
     );
   }
 
-  return (
-    <AppShell>
-      <Centerblock title={selection.name ?? 'Подборка'} tracks={tracks} />
-    </AppShell>
-  );
+  return <Centerblock title={selection.name ?? 'Подборка'} tracks={tracks} />;
 }
