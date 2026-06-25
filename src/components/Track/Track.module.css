@@ -117,6 +117,13 @@
   stroke: #4e4e4e;
 }
 
+.trackTime {
+  min-width: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
 .trackTimeText {
   font-style: normal;
   font-weight: 400;

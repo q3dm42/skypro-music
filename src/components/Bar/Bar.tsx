@@ -11,6 +11,7 @@ import {
 } from '@/store/features/trackSlice';
 import { useAppDispatch, useAppSelector } from '@/store/store';
 import { formatTrackTime } from '@/utils/trackHelpers';
+import FavoriteButton from '../FavoriteButton/FavoriteButton';
 import ProgressBar from '../ProgressBar/ProgressBar';
 import styles from './Bar.module.css';
 
@@ -262,6 +263,7 @@ export default function Bar() {
                   </Link>
                 </div>
               </div>
+              <FavoriteButton track={currentTrack} variant="bar" showCount />
             </div>
           </div>
 

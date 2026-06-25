@@ -1,0 +1,37 @@
+.personal {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 12px 0 15px 0;
+}
+
+.personalName {
+  max-width: 180px;
+  margin-right: 16px;
+  color: #ffffff;
+  font-size: 16px;
+  line-height: 24px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.icon {
+  width: 43px;
+  height: 43px;
+  border: 0;
+  border-radius: 50%;
+  background-color: #313131;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logoutIcon {
+  width: 18px;
+  height: 18px;
+  fill: transparent;
+  stroke: #ffffff;
+}

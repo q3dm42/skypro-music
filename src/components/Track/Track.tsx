@@ -8,6 +8,7 @@ import {
 } from '@/store/features/trackSlice';
 import { useAppDispatch, useAppSelector } from '@/store/store';
 import { formatTrackTime } from '@/utils/trackHelpers';
+import FavoriteButton from '../FavoriteButton/FavoriteButton';
 import styles from './Track.module.css';
 
 type TrackProps = {
@@ -28,11 +29,20 @@ export default function Track({ track, playlist }: TrackProps) {
     dispatch(setIsPlaying(true));
   };
 
+  const handleTrackKeyDown = (event: React.KeyboardEvent<HTMLDivElement>) => {
+    if (event.key === 'Enter' || event.key === ' ') {
+      event.preventDefault();
+      handleTrackClick();
+    }
+  };
+
   return (
-    <button
+    <div
       className={styles.playlistItem}
-      type="button"
+      role="button"
+      tabIndex={0}
       onClick={handleTrackClick}
+      onKeyDown={handleTrackKeyDown}
     >
       <div className={styles.playlistTrack}>
         <div className={styles.trackTitle}>
@@ -65,14 +75,12 @@ export default function Track({ track, playlist }: TrackProps) {
           <span className={styles.trackAlbumLink}>{track.album}</span>
         </div>
         <div className={styles.trackTime}>
-          <svg className={styles.trackTimeSvg}>
-            <use href="/img/icon/sprite.svg#icon-like"></use>
-          </svg>
+          <FavoriteButton track={track} variant="track" showCount />
           <span className={styles.trackTimeText}>
             {formatTrackTime(track.duration_in_seconds)}
           </span>
         </div>
       </div>
-    </button>
+    </div>
   );
 }
