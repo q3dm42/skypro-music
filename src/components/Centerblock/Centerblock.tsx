@@ -1,14 +1,19 @@
+import type { Track } from '@/types/track';
 import Filter from '../Filter/Filter';
 import Playlist from '../Playlist/Playlist';
 import Search from '../Search/Search';
 import styles from './Centerblock.module.css';
 
-export default function Centerblock() {
+type CenterblockProps = {
+  tracks: Track[];
+};
+
+export default function Centerblock({ tracks }: CenterblockProps) {
   return (
     <section className={styles.centerblock}>
       <Search />
       <h1 className={styles.h2}>Треки</h1>
-      <Filter />
+      <Filter tracks={tracks} />
 
       <div className={styles.content}>
         <div className={styles.contentTitle}>
@@ -28,7 +33,7 @@ export default function Centerblock() {
           </div>
         </div>
 
-        <Playlist />
+        <Playlist tracks={tracks} />
       </div>
     </section>
   );
