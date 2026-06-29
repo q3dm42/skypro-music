@@ -1,159 +1,38 @@
 'use client';
 
-import { useEffect, useRef, useState, type ChangeEvent } from 'react';
 import Link from 'next/link';
-import {
-  setIsPlaying,
-  setNextTrack,
-  setPrevTrack,
-  toggleLoop,
-  toggleShuffle,
-} from '@/store/features/trackSlice';
-import { useAppDispatch, useAppSelector } from '@/store/store';
+import { useAudioPlayer } from '@/hooks/useAudioPlayer';
 import { formatTrackTime } from '@/utils/trackHelpers';
 import FavoriteButton from '../FavoriteButton/FavoriteButton';
 import ProgressBar from '../ProgressBar/ProgressBar';
 import styles from './Bar.module.css';
 
 export default function Bar() {
-  const dispatch = useAppDispatch();
-  const currentTrack = useAppSelector((state) => state.track.currentTrack);
-  const isPlaying = useAppSelector((state) => state.track.isPlaying);
-  const isShuffle = useAppSelector((state) => state.track.isShuffle);
-  const isLoop = useAppSelector((state) => state.track.isLoop);
-  const playlist = useAppSelector((state) => state.track.playlist);
-  const shuffledPlaylist = useAppSelector(
-    (state) => state.track.shuffledPlaylist,
-  );
-  const audioRef = useRef<HTMLAudioElement | null>(null);
-  const [progress, setProgress] = useState<{
-    trackId: number | null;
-    currentTime: number;
-    duration: number;
-  }>({
-    trackId: null,
-    currentTime: 0,
-    duration: 0,
-  });
-  const [volume, setVolume] = useState(0.5);
-
-  useEffect(() => {
-    if (audioRef.current) {
-      audioRef.current.volume = volume;
-    }
-  }, [volume]);
-
-  useEffect(() => {
-    const audio = audioRef.current;
-
-    if (!audio || !currentTrack) {
-      return;
-    }
-
-    if (isPlaying) {
-      audio.play().catch(() => dispatch(setIsPlaying(false)));
-    } else {
-      audio.pause();
-    }
-  }, [currentTrack, dispatch, isPlaying]);
-
-  const handlePlayToggle = () => {
-    if (!currentTrack) {
-      return;
-    }
-
-    dispatch(setIsPlaying(!isPlaying));
-  };
-
-  const handleCanPlay = () => {
-    const audio = audioRef.current;
-
-    if (!audio) {
-      return;
-    }
-
-    if (isPlaying) {
-      audio.play().catch(() => dispatch(setIsPlaying(false)));
-    }
-  };
-
-  const handleLoadedMetadata = () => {
-    const audio = audioRef.current;
-
-    if (!audio) {
-      return;
-    }
-
-    setProgress({
-      trackId: currentTrack?._id ?? null,
-      currentTime: 0,
-      duration: Number.isFinite(audio.duration) ? audio.duration : 0,
-    });
-  };
-
-  const handleTimeUpdate = () => {
-    const audio = audioRef.current;
-
-    if (audio) {
-      setProgress((currentProgress) => ({
-        ...currentProgress,
-        trackId: currentTrack?._id ?? currentProgress.trackId,
-        currentTime: audio.currentTime,
-      }));
-    }
-  };
-
-  const handleProgressChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const audio = audioRef.current;
-    const nextTime = Number(event.target.value);
-
-    if (!audio) {
-      return;
-    }
-
-    audio.currentTime = nextTime;
-    setProgress((currentProgress) => ({
-      ...currentProgress,
-      currentTime: nextTime,
-    }));
-  };
-
-  const handleVolumeChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setVolume(Number(event.target.value));
-  };
-
-  const handleNextTrack = () => {
-    dispatch(setNextTrack());
-  };
-
-  const handlePrevTrack = () => {
-    dispatch(setPrevTrack());
-  };
-
-  const handleTrackEnd = () => {
-    if (isLoop || !currentTrack) {
-      return;
-    }
-
-    const activePlaylist = isShuffle ? shuffledPlaylist : playlist;
-    const currentIndex = activePlaylist.findIndex(
-      (track) => track._id === currentTrack._id,
-    );
-
-    if (currentIndex >= 0 && currentIndex < activePlaylist.length - 1) {
-      dispatch(setNextTrack());
-    } else {
-      dispatch(setIsPlaying(false));
-    }
-  };
+  const {
+    audioRef,
+    currentTime,
+    currentTrack,
+    duration,
+    handleCanPlay,
+    handleLoadedMetadata,
+    handleLoopToggle,
+    handleNextTrack,
+    handlePlayToggle,
+    handlePrevTrack,
+    handleProgressChange,
+    handleShuffleToggle,
+    handleTimeUpdate,
+    handleTrackEnd,
+    handleVolumeChange,
+    isLoop,
+    isPlaying,
+    isShuffle,
+    volume,
+  } = useAudioPlayer();
 
   if (!currentTrack) {
     return null;
   }
-
-  const isCurrentTrackLoaded = progress.trackId === currentTrack._id;
-  const currentTime = isCurrentTrackLoaded ? progress.currentTime : 0;
-  const duration = isCurrentTrackLoaded ? progress.duration : 0;
 
   return (
     <div className={styles.bar}>
@@ -224,7 +103,7 @@ export default function Bar() {
                   isLoop ? styles.btnActive : ''
                 }`}
                 type="button"
-                onClick={() => dispatch(toggleLoop())}
+                onClick={handleLoopToggle}
                 aria-label="Зациклить трек"
               >
                 <svg className={styles.playerBtnRepeatSvg}>
@@ -236,7 +115,7 @@ export default function Bar() {
                   isShuffle ? styles.btnActive : ''
                 }`}
                 type="button"
-                onClick={() => dispatch(toggleShuffle())}
+                onClick={handleShuffleToggle}
                 aria-label="Перемешать плейлист"
               >
                 <svg className={styles.playerBtnShuffleSvg}>
